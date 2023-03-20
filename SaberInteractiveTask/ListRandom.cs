@@ -26,31 +26,6 @@
             Count++;
         }
 
-        public void Insert(ListNode node, int index)
-        {
-            if (index < 0 || index >= Count)
-                throw new IndexOutOfRangeException(nameof(index));
-
-            if (Count == 0)
-            {
-                Head = node;
-                Tail = node;
-                Count = 1;
-                return;
-            }
-
-            var current = GetNodeAt(index);
-
-            node.Next = current;
-            node.Previous = current.Previous;
-            current.Previous = node;
-
-            if (node.Previous != null)
-                node.Previous.Next = node;
-
-            Count++;
-        }
-
         public ListNode GetNodeAt(int index)
         {
             if (index < 0 || index >= Count)
@@ -88,8 +63,6 @@
                 var nodeMeta = new ListNodeMeta()
                 {
                     Id = nodeId.Value,
-                    PreviousId = GetId(node.Previous, nodeIds),
-                    NextId = GetId(node.Next, nodeIds),
                     RandomId = GetId(node.Random, nodeIds),
                     Data = node.Data
                 };

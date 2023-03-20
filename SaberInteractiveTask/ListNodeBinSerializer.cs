@@ -5,10 +5,8 @@ namespace SaberInteractiveTask
     public class ListNodeBinSerializer
     {
         private const int IdOffset = 0;
-        private const int PreviousIdOffset = 4;
-        private const int NextIdOffset = 8;
-        private const int RandomIdOffset = 12;
-        private const int DataLengthOffset = 16;
+        private const int RandomIdOffset = 4;
+        private const int DataLengthOffset = 8;
 
         private readonly StringBuilder _stringBuilder = new();
 
@@ -17,12 +15,6 @@ namespace SaberInteractiveTask
             byte[] buffer;
 
             buffer = BitConverter.GetBytes(nodeMeta.Id);
-            s.Write(buffer, 0, buffer.Length);
-
-            buffer = BitConverter.GetBytes(nodeMeta.PreviousId);
-            s.Write(buffer, 0, buffer.Length);
-
-            buffer = BitConverter.GetBytes(nodeMeta.NextId);
             s.Write(buffer, 0, buffer.Length);
 
             buffer = BitConverter.GetBytes(nodeMeta.RandomId);
@@ -40,7 +32,7 @@ namespace SaberInteractiveTask
 
         public IEnumerable<ListNodeMeta> Deserialize(Stream s)
         {
-            byte[] buffer = new byte[sizeof(int) * 5];
+            byte[] buffer = new byte[sizeof(int) * 3];
             byte[] dataBuffer;
             var node = new ListNodeMeta();
 
@@ -66,8 +58,6 @@ namespace SaberInteractiveTask
         private void DeserializeIds(byte[] buffer, ListNodeMeta node)
         {
             node.Id = BitConverter.ToInt32(buffer, IdOffset);
-            node.PreviousId = BitConverter.ToInt32(buffer, PreviousIdOffset);
-            node.NextId = BitConverter.ToInt32(buffer, NextIdOffset);
             node.RandomId = BitConverter.ToInt32(buffer, RandomIdOffset);
         }
 
